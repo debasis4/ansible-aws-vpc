@@ -12,7 +12,7 @@
 
     - name: Create vprofile ec2 key
       ec2_key:
-        name: ancible-key
+        name: vprofile-key
         region: us-east-2
       register: key_out
 
@@ -21,7 +21,7 @@
         content: "{{key_out.key.private_key}}"
         dest: ./bastion-key.pem
         mode: 0600
-      when: keyout.changed
+      when: key_out.changed
     
     - name: Create Sec Grp for bastion host
       description: Allow port 22 from everywher and all port within sg
@@ -38,7 +38,7 @@
 
     - name: Creating Bastion Host
       ec2:
-        key_name: ancible-key
+        key_name: vprofile-key
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{ bastion_ami }}"
