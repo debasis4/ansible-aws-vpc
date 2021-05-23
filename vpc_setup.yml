@@ -91,12 +91,12 @@
             Name: vprofile-privsub3
       register: privsub3_out
 
-- name: Internet Gateway Setup
-  ec2_vpc_igw:
-    vpc_id: "{{vpcout.vpc.id}}"
-    region: "{{ region }}"
-    state: "{{ state }}"
-    map_public: yes
-    resource_tags:
+    - name: Internet Gateway Setup
+      ec2_vpc_igw:
+        vpc_id: "{{vpcout.vpc.id}}"
+        region: "{{ region }}"
+        state: "{{ state }}"
+        map_public: yes
+        resource_tags:
             Name: vprofile-IGW
-  register: igw_out
+      register: igw_out
