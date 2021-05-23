@@ -13,7 +13,7 @@
     - name: Create vprofile ec2 key
       ec2_key:
         name: vprofile-key
-        region: us-east-2
+        region: "{{region}}"
       register: key_out
 
     - name: Save private key into bastion-key.pem
@@ -24,9 +24,9 @@
       when: key_out.changed
     
     - name: Create Sec Grp for bastion host
-      description: Allow port 22 from everywher and all port within sg
       ec2_group:
         name: Bastion-host-sg
+        description: Allow port 22 from everywher and all port within sg
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         rules:
