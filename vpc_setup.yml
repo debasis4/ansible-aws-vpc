@@ -96,7 +96,6 @@
         vpc_id: "{{vpcout.vpc.id}}"
         region: "{{ region }}"
         state: "{{ state }}"
-        map_public: yes
         resource_tags:
             Name: vprofile-IGW
       register: igw_out
