@@ -22,3 +22,15 @@
         dest: ./loginkey_vpro.pem
         mode: 0600
       when: vprokey_out.changed
+    - name: Create Security group for Load Balancer
+      ec2_group:
+        name: vpro_ELB
+        description: Allow Port 80 from everywhere and all port within sg
+        region: "{{region}}"
+        vpcid: "{{vpcid}}"
+        rule:
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+      register: vproELBSG_out
