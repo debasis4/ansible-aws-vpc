@@ -4,29 +4,30 @@
   connection: local
   gather_facts: no
   tasks:
-    - name: Import VPC Setup Variable
-      include_vars: vars/vpc_setup
-  
+    - name: Import VPC setup Variable
+      include_vars: vars/bastion_setup
+
     - name: Import VPC setup Variable
       include_vars: vars/output_vars
 
     - name: Create vprofile ec2 key
       ec2_key:
-        name: ansible-key
+        name: vprofile-key
         region: "{{region}}"
       register: key_out
 
-    - name: Save private key into bastion-key.pem
+
+    - name: Save private key into file bastion-key.pem
       copy:
         content: "{{key_out.key.private_key}}"
-        dest: ./ansible-key.pem
+        dest: "./bastion-key.pem"
         mode: 0600
       when: key_out.changed
-    
+
     - name: Create Sec Grp for bastion host
       ec2_group:
         name: Bastion-host-sg
-        description: Allow port 22 from everywher and all port within sg
+        description: Allow port 22 from everywhere and all port within sg
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
         rules:
@@ -38,7 +39,7 @@
 
     - name: Creating Bastion Host
       ec2:
-        key_name: ansible-key
+        key_name: vprofile-key
         region: "{{region}}"
         instance_type: t2.micro
         image: "{{ bastion_ami }}"
